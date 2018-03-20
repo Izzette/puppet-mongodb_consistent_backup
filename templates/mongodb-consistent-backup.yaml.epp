@@ -1,0 +1,167 @@
+<%- | Type[mongodb_consistent_backup::backup] $backup,
+      Stdlib::Absolutepath                    $path,
+| -%>
+<%-
+$environment                    = getparam($backup, 'environment')
+$host                           = getparam($backup, 'host')
+$port                           = getparam($backup, 'port')
+$username                       = getparam($backup, 'username')
+$password                       = getparam($backup, 'password')
+$authdb                         = getparam($backup, 'authdb')
+$ssl_enabled                    = getparam($backup, 'ssl_enabled')
+$ssl_insecure                   = getparam($backup, 'ssl_insecure')
+$ssl_ca_file                    = getparam($backup, 'ssl_ca_file')
+$ssl_crl_file                   = getparam($backup, 'ssl_crl_file')
+$ssl_client_cert_file           = getparam($backup, 'ssl_client_cert_file')
+$log_dir                        = getparam($backup, 'log_dir')
+$lock_file                      = getparam($backup, 'lock_file')
+$rotate_max_backups             = getparam($backup, 'rotate_max_backups')
+$rotate_max_days                = getparam($backup, 'rotate_max_days')
+$sharding_blancer_wait_secs     = getparam($backup, 'sharding_blancer_wait_secs')
+$sharding_blancer_ping_secs     = getparam($backup, 'sharding_blancer_ping_secs')
+$archive_method                 = getparam($backup, 'archive_method')
+$archive_tar_compression        = getparam($backup, 'archive_tar_compression')
+$archive_tar_threads            = getparam($backup, 'archive_tar_threads')
+$archive_zbackup_binary         = getparam($backup, 'archive_zbackup_binary')
+$archive_zbackup_cache_mb       = getparam($backup, 'archive_zbackup_cache_mb')
+$archive_zbackup_compression    = getparam($backup, 'archive_zbackup_compression')
+$archive_zbackup_password_file  = getparam($backup, 'archive_zbackup_password_file')
+$archive_zbackup_threads        = getparam($backup, 'archive_zbackup_threads')
+$backup_name                    = getparam($backup, 'backup_name')
+$backup_location                = getparam($backup, 'backup_location')
+$backup_method                  = getparam($backup, 'backup_method')
+$backup_mongodump_binary        = getparam($backup, 'backup_mongodump_binary')
+$backup_mongodump_compression   = getparam($backup, 'backup_mongodump_compression')
+$backup_mongodump_threads       = getparam($backup, 'backup_mongodump_threads')
+$notify_method                  = getparam($backup, 'notify_method')
+$notify_nsca_server             = getparam($backup, 'notify_nsca_server')
+$notify_nsca_password           = getparam($backup, 'notify_nsca_password')
+$notify_nsca_check_name         = getparam($backup, 'notify_nsca_check_name')
+$notify_nsca_check_host         = getparam($backup, 'notify_nsca_check_host')
+$oplog_compression              = getparam($backup, 'oplog_compression')
+$oplog_flush_max_docs           = getparam($backup, 'oplog_flush_max_docs')
+$oplog_flush_max_secs           = getparam($backup, 'oplog_flush_max_secs')
+$oplog_resolver_threads         = getparam($backup, 'oplog_resolver_threads')
+$oplog_tailer_enabled           = getparam($backup, 'oplog_tailer_enabled')
+$oplog_tailer_status_interval   = getparam($backup, 'oplog_tailer_status_interval')
+$replication_max_lag_secs       = getparam($backup, 'replication_max_lag_secs')
+$replication_min_priority       = getparam($backup, 'replication_min_priority')
+$replication_max_priority       = getparam($backup, 'replication_max_priority')
+$replication_hidden_only        = getparam($backup, 'replication_hidden_only')
+$replication_read_pref_tags     = getparam($backup, 'replication_read_pref_tags')
+$upload_method                  = getparam($backup, 'upload_method')
+$upload_remove_uploaded         = getparam($backup, 'upload_remove_uploaded')
+$upload_retries                 = getparam($backup, 'upload_retries')
+$upload_threads                 = getparam($backup, 'upload_threads')
+$upload_gs_project_id           = getparam($backup, 'upload_gs_project_id')
+$upload_gs_access_key           = getparam($backup, 'upload_gs_access_key')
+$upload_gs_secret_key           = getparam($backup, 'upload_gs_secret_key')
+$upload_gs_bucket_name          = getparam($backup, 'upload_gs_bucket_name')
+$upload_gs_bucket_prefix        = getparam($backup, 'upload_gs_bucket_prefix')
+$upload_rsync_path              = getparam($backup, 'upload_rsync_path')
+$upload_rsync_user              = getparam($backup, 'upload_rsync_user')
+$upload_rsync_host              = getparam($backup, 'upload_rsync_host')
+$upload_rsync_port              = getparam($backup, 'upload_rsync_port')
+$upload_rsync_ssh_key           = getparam($backup, 'upload_rsync_ssh_key')
+$upload_s3_region               = getparam($backup, 'upload_s3_region')
+$upload_s3_access_key           = getparam($backup, 'upload_s3_access_key')
+$upload_s3_secret_key           = getparam($backup, 'upload_s3_secret_key')
+$upload_s3_bucket_name          = getparam($backup, 'upload_s3_bucket_name')
+$upload_s3_bucket_prefix        = getparam($backup, 'upload_s3_bucket_prefix')
+$upload_s3_bucket_explicit_key  = getparam($backup, 'upload_s3_bucket_explicit_key')
+$upload_s3_chunk_size_mb        = getparam($backup, 'upload_s3_chunk_size_mb')
+$upload_s3_secure               = getparam($backup, 'upload_s3_secure')
+$upload_s3_acl                  = getparam($backup, 'upload_s3_acl')
+-%>
+# <%= $path %>
+---
+<%= $environment %>:
+  host: '<%= $host %>'
+  port: <%= $port %>
+  username: <% if $username { %>'<%= $username %>'<% } else { %>null<% } %>
+  password: <% if $password { %>'<%= $password %>'<% } else { %>null<% } %>
+  authdb: '<%= $authdb %>'
+  ssl:
+    enabled: <%= $ssl_enabled %>
+    insecure: <%= $ssl_insecure %>
+    ca_file: <% if $ssl_ca_file { %>'<%= $ssl_ca_file %>'<% } else { %>null<% } %>
+    crl_file: <% if $ssl_crl_file { %>'<%= $ssl_crl_file %>'<% } else { %>null<% } %>
+    client_cert_file: <% if $ssl_client_cert_file { %>'<%= $ssl_client_cert_file %>'<% } else { %>null<% } %>
+  log_dir: '<%= $log_dir %>'
+  lock_file: '<%= $lock_file %>'
+  rotate:
+    max_backups: <%= $rotate_max_backups %>
+    max_days: <%= $rotate_max_days %>
+  sharding:
+    balancer:
+      wait_secs: <%= $sharding_blancer_wait_secs %>
+      ping_secs: <%= $sharding_blancer_ping_secs %>
+  archive:
+    method: '<%= $archive_method %>'
+    tar:
+      compression: '<%= $archive_tar_compression %>'
+      threads: <%= $archive_tar_threads %>
+    zbackup:
+      binary: '<%= $archive_zbackup_binary %>'
+      cache_mb: <%= $archive_zbackup_cache_mb %>
+      compression: '<%= $archive_zbackup_compression %>'
+      password_file: <% if $archive_zbackup_password_file { %>'<%= $archive_zbackup_password_file %>'<% } else { %>null<% } %>
+      threads: <%= $archive_zbackup_threads %>
+  backup:
+    name: '<%= $backup_name %>'
+    location: '<%= $backup_location %>'
+    method: '<%= $backup_method %>'
+    mongodump:
+      binary: '<%= $backup_mongodump_binary %>'
+      compression: '<%= $backup_mongodump_compression %>'
+      threads: <%= $backup_monodump_threads %>
+  notify:
+    method: '<%= $notify_method %>'
+    nsca:
+      server: <% if $notify_nsca_server { %>'<%= $notify_nsca_server %>'<% } else { %>null<% } %>
+      password: <% if $notify_nsca_password { %>'<%= $notify_nsca_password %>'<% } else { %>null<% } %>
+      check_host: <% if $notify_nsca_check_host { %>'<%= $notify_nsca_check_host %>'<% } else { %>null<% } %>
+      check_name: <% if $notify_nsca_check_name { %>'<%= $notify_nsca_check_name %>'<% } else { %>null<% } %>
+  oplog:
+    compression: '<%= $oplog_compression %>'
+    flush:
+      max_docs: <%= $oplog_flush_max_docs %>
+      max_secs: <%= $oplog_flush_max_secs %>
+    resolver:
+      threads: <%= $oplog_resolver_threads %>
+    tailer:
+      enabled: '<%= $oplog_tailer_enabled %>'
+      status_interval: <%= $oplog_tailer_status_interval %>
+  replication:
+    max_lag_secs: <%= $replication_max_lag_secs %>
+    min_priority: <%= $replication_min_priority %>
+    max_priority: <%= $replication_max_priority %>
+    hidden_only: <%= $replication_hidden_only %>
+    read_pref_tags: <% if $replication_read_pref_tags { %>'<% $replication_read_pref_tags.each |$k, $v| { %><%= "$k,$v" %><% } %>'<% } else { %>null<% } %>
+  upload:
+    method: '<%= $upload_method %>'
+    remove_uploaded: <%= $upload_remove_uploaded %>
+    retries: <%= $upload_retries %>
+    threads: <%= $upload_threads %>
+    gs:
+      project_id: <% if $upload_gs_project_id { %>'<%= $upload_gs_project_id %>'<% } else { %>null<% } %>
+      access_key: <% if $upload_gs_access_key { %>'<%= $upload_gs_access_key %>'<% } else { %>null<% } %>
+      secret_key: <% if $upload_gs_secret_key { %>'<%= $upload_gs_secret_key %>'<% } else { %>null<% } %>
+      bucket_name: <% if $upload_gs_bucket_name { %>'<%= $upload_gs_bucket_name %>'<% } else { %>null<% } %>
+      bucket_prefix: <% if $upload_gs_bucket_prefix { %>'<%= $upload_gs_bucket_prefix %>'<% } else { %>null<% } %>
+    rsync:
+      path: '<%= $upload_rsync_path %>'
+      user: <% if $upload_rsync_user { %>'<%= $upload_rsync_user %>'<% } else { %>null<% } %>
+      host: <% if $upload_rsync_host { %>'<%= $upload_rsync_host %>'<% } else { %>null<% } %>
+      port: <%= $upload_rsync_port %>
+      ssh_key: <% if $upload_rsync_ssh_key { %>'<%= $upload_rsync_ssh_key %>'<% } else { %>null<% } %>
+    s3:
+      region: '<%= $upload_s3_region %>'
+      access_key: <% if $upload_s3_access_key { %>'<%= $upload_s3_access_key %>'<% } else { %>null<% } %>
+      secret_key: <% if $upload_s3_secret_key { %>'<%= $upload_s3_secret_key %>'<% } else { %>null<% } %>
+      bucket_name: <% if $upload_s3_bucket_name { %>'<%= $upload_s3_bucket_name %>'<% } else { %>null<% } %>
+      bucket_prefix: <% if $upload_s3_bucket_prefix { %>'<%= $upload_s3_bucket_prefix %>'<% } else { %>null<% } %>
+      chunk_size_mb: <%= $upload_s3_chunk_size_mb %>
+      secure: <%= $upload_s3_secure %>
+      acl: <% if $upload_s3_acl { %>'<%= $upload_s3_acl %>'<% } else { %>null<% } %>
+# vim: set ts=2 sw=2 et syn=yaml:

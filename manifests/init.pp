@@ -1,48 +1,14 @@
-# Class: mongodb_consistent_backup
-# ===========================
-#
-# Full description of class mongodb_consistent_backup here.
-#
-# Parameters
-# ----------
-#
-# Document parameters here.
-#
-# * `sample parameter`
-# Explanation of what this parameter affects and what it defaults to.
-# e.g. "Specify one or more upstream ntp servers as an array."
-#
-# Variables
-# ----------
-#
-# Here you should define a list of variables that this module would require.
-#
-# * `sample variable`
-#  Explanation of how this variable affects the function of this class and if
-#  it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#  External Node Classifier as a comma separated list of hostnames." (Note,
-#  global variables should be avoided in favor of class parameters as
-#  of Puppet 2.6.)
-#
-# Examples
-# --------
-#
-# @example
-#    class { 'mongodb_consistent_backup':
-#      servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
-#    }
-#
-# Authors
-# -------
-#
-# Author Name <author@domain.com>
-#
-# Copyright
-# ---------
-#
-# Copyright 2018 Your name here, unless otherwise noted.
-#
-class mongodb_consistent_backup {
+# init.pp
 
-
+class mongodb_consistent_backup (
+  Boolean               $manage_package   = $::mongodb_consistent_backup::params::manage_package,
+  String                $package_name     = $::mongodb_consistent_backup::params::package_name,
+  String                $package_ensure   = $::mongodb_consistent_backup::params::package_ensure,
+  Stdlib::Absolutepath  $mcb_path         = $::mongodb_consistent_backup::params::mcb_path,
+  Stdlib::Absolutepath  $config_directory = $::mongodb_consistent_backup::params::config_directory,
+) inherits ::mongodb_consistent_backup::params {
+  contain '::mongodb_consistent_backup::package'
+  contain '::mongodb_consistent_backup::config_directory'
 }
+
+# vim: set ts=2 sw=2 et syn=puppet:
