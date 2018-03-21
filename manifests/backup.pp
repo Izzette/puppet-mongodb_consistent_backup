@@ -93,10 +93,7 @@ define mongodb_consistent_backup::backup (
   $path = "$config_directory/$title.yaml"
   file { "$path":
     ensure  => file,
-    content => epp("$module_name/mongodb-consistent-backup.yaml.eep", {
-      backup  => Mongodb_consistent_backup::Backup[$title],
-      path    => $path,
-    }),
+    content => template("$module_name/mongodb-consistent-backup.yaml.erb"),
   }
 
   if $manage_cron {

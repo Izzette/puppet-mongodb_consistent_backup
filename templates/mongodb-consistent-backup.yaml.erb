@@ -1,0 +1,96 @@
+<% require 'json' -%>
+# <%= @path %>
+---
+<%= @environment.to_json %>:
+  host: <%= @host.to_json %>
+  port: <%= @port.to_json %>
+  username: <%= @username.to_json %>
+  password: <%= @password.to_json %>
+  authdb: <%= @authdb.to_json %>
+  ssl:
+    enabled: <%= @ssl_enabled.to_json %>
+    insecure: <%= @ssl_insecure.to_json %>
+    ca_file: <%= @ssl_ca_file.to_json %>
+    crl_file: <%= @ssl_crl_file.to_json %>
+    client_cert_file: <%= @ssl_client_cert_file.to_json %>
+  log_dir: <%= @log_dir.to_json %>
+  lock_file: <%= @lock_file.to_json %>
+  rotate:
+    max_backups: <%= @rotate_max_backups.to_json %>
+    max_days: <%= @rotate_max_days.to_json %>
+  sharding:
+    balancer:
+      wait_secs: <%= @sharding_blancer_wait_secs.to_json %>
+      ping_secs: <%= @sharding_blancer_ping_secs.to_json %>
+  archive:
+    method: <%= @archive_method.to_json %>
+    tar:
+      compression: <%= @archive_tar_compression.to_json %>
+      threads: <%= @archive_tar_threads.to_json %>
+    zbackup:
+      binary: <%= @archive_zbackup_binary.to_json %>
+      cache_mb: <%= @archive_zbackup_cache_mb.to_json %>
+      compression: <%= @archive_zbackup_compression.to_json %>
+      password_file: <%= @archive_zbackup_password_file.to_json %>
+      threads: <%= @archive_zbackup_threads.to_json %>
+  backup:
+    name: <%= @backup_name.to_json %>
+    location: <%= @backup_location.to_json %>
+    method: <%= @backup_method.to_json %>
+    mongodump:
+      binary: <%= @backup_mongodump_binary.to_json %>
+      compression: <%= @backup_mongodump_compression.to_json %>
+      threads: <%= @backup_mongodump_threads.to_json %>
+  notify:
+    method: <%= @notify_method.to_json %>
+    nsca:
+      server: <%= @notify_nsca_server.to_json %>
+      password: <%= @notify_nsca_password.to_json %>
+      check_host: <%= @notify_nsca_check_host.to_json %>
+      check_name: <%= @notify_nsca_check_name.to_json %>
+  oplog:
+    compression: <%= @oplog_compression.to_json %>
+    flush:
+      max_docs: <%= @oplog_flush_max_docs.to_json %>
+      max_secs: <%= @oplog_flush_max_secs.to_json %>
+    resolver:
+      threads: <%= @oplog_resolver_threads.to_json %>
+    tailer:
+      enabled: <%= @oplog_tailer_enabled.to_json %>
+      status_interval: <%= @oplog_tailer_status_interval.to_json %>
+  replication:
+    max_lag_secs: <%= @replication_max_lag_secs.to_json %>
+    min_priority: <%= @replication_min_priority.to_json %>
+    max_priority: <%= @replication_max_priority.to_json %>
+    hidden_only: <%= @replication_hidden_only.to_json %>
+<% if @replication_read_pref_tags -%>
+    read_pref_tags: '<%= @replication_read_pref_tags.map{|k,v| "#{k},#{v}"}.join(',').to_json %>'
+<% else -%>
+    read_pref_tags: null
+<% end -%>
+  upload:
+    method: <%= @upload_method.to_json %>
+    remove_uploaded: <%= @upload_remove_uploaded.to_json %>
+    retries: <%= @upload_retries.to_json %>
+    threads: <%= @upload_threads.to_json %>
+    gs:
+      project_id: <%= @upload_gs_project_id.to_json %>
+      access_key: <%= @upload_gs_access_key.to_json %>
+      secret_key: <%= @upload_gs_secret_key.to_json %>
+      bucket_name: <%= @upload_gs_bucket_name.to_json %>
+      bucket_prefix: <%= @upload_gs_bucket_prefix.to_json %>
+    rsync:
+      path: <%= @upload_rsync_path.to_json %>
+      user: <%= @upload_rsync_user.to_json %>
+      host: <%= @upload_rsync_host.to_json %>
+      port: <%= @upload_rsync_port.to_json %>
+      ssh_key: <%= @upload_rsync_ssh_key.to_json %>
+    s3:
+      region: <%= @upload_s3_region.to_json %>
+      access_key: <%= @upload_s3_access_key.to_json %>
+      secret_key: <%= @upload_s3_secret_key.to_json %>
+      bucket_name: <%= @upload_s3_bucket_name.to_json %>
+      bucket_prefix: <%= @upload_s3_bucket_prefix.to_json %>
+      chunk_size_mb: <%= @upload_s3_chunk_size_mb.to_json %>
+      secure: <%= @upload_s3_secure.to_json %>
+      acl: <%= @upload_s3_acl.to_json %>
