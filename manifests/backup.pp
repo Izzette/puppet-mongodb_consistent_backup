@@ -4,17 +4,6 @@ define mongodb_consistent_backup::backup (
   Stdlib::Absolutepath  $mcb_path         = $::mongodb_consistent_backup::mcb_path,
   Stdlib::Absolutepath  $config_directory = $::mongodb_consistent_backup::config_directory,
 
-  Boolean                                                                                     $manage_cron   = true,
-  Optional[Variant[Array[Variant[Integer[0, 59], String]], Variant[Integer[0, 59], String]]]  $cron_minute   = undef,
-  Optional[Variant[Array[Variant[Integer[0, 23], String]], Variant[Integer[0, 23], String]]]  $cron_hour     = undef,
-  Optional[Variant[Array[Variant[Integer[0, 7], String]], Variant[Integer[0, 7], String]]]    $cron_weekday  = undef,
-  Optional[Variant[Array[Variant[Integer[1, 31], String]], Variant[Integer[1, 31], String]]]  $cron_monthday = undef,
-  Optional[Variant[Array[Variant[Integer[1, 12], String]], Variant[Integer[1, 12], String]]]  $cron_month    = undef,
-  Optional[String]                                                                            $cron_special  = undef,
-  Optional[String]                                                                            $cron_user     = undef,
-  Optional[Stdlib::Absolutepath]                                                              $cron_target   = undef,
-  Optional[String]                                                                            $cron_provider = undef,
-
   Boolean                                         $verbose                        = false,
   Enum['production', 'staging', 'development']    $environment                    = 'production',
   String                                          $host                           = 'localhost',
@@ -86,6 +75,17 @@ define mongodb_consistent_backup::backup (
   Integer[1]                                      $upload_s3_chunk_size_mb        = 50,
   Boolean                                         $upload_s3_secure               = true,
   Optional[String]                                $upload_s3_acl                  = undef,
+
+  Boolean                                                                                     $manage_cron   = true,
+  Optional[Variant[Array[Variant[Integer[0, 59], String]], Variant[Integer[0, 59], String]]]  $cron_minute   = undef,
+  Optional[Variant[Array[Variant[Integer[0, 23], String]], Variant[Integer[0, 23], String]]]  $cron_hour     = undef,
+  Optional[Variant[Array[Variant[Integer[0, 7], String]], Variant[Integer[0, 7], String]]]    $cron_weekday  = undef,
+  Optional[Variant[Array[Variant[Integer[1, 31], String]], Variant[Integer[1, 31], String]]]  $cron_monthday = undef,
+  Optional[Variant[Array[Variant[Integer[1, 12], String]], Variant[Integer[1, 12], String]]]  $cron_month    = undef,
+  Optional[String]                                                                            $cron_special  = undef,
+  Optional[String]                                                                            $cron_user     = undef,
+  Optional[Stdlib::Absolutepath]                                                              $cron_target   = undef,
+  Optional[String]                                                                            $cron_provider = undef,
 ) {
   require '::mongodb_consistent_backup::package'
   require '::mongodb_consistent_backup::config_directory'
