@@ -101,12 +101,12 @@ define mongodb_consistent_backup::backup (
 
   if $manage_cron {
     $verbose_option = $verbose ? {
-      true: '--verbose',
-      default: '',
+      true    => '--verbose',
+      default => '',
     }
 
     cron { "mongodb-consistent-backup-$title":
-      command   => "'$mcb_path' $verbose_option --config '$path'"
+      command   => "'$mcb_path' $verbose_option --config '$path'",
       minute    => $cron_minute,
       hour      => $cron_hour,
       weekday   => $cron_weekday,
@@ -115,7 +115,7 @@ define mongodb_consistent_backup::backup (
       special   => $cron_special,
       user      => $cron_user,
       target    => $cron_target,
-      provider  => $cron_provider
+      provider  => $cron_provider,
       require   => File[$path],
     }
   }
