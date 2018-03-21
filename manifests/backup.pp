@@ -1,6 +1,6 @@
 # backup.pp
 
-class mongodb_consistent_backup::backup (
+define mongodb_consistent_backup::backup (
   Stdlib::Absolutepath  $mcb_path         = $::mongodb_consistent_backup::mcb_path,
   Stdlib::Absolutepath  $config_directory = $::mongodb_consistent_backup::config_directory,
 
