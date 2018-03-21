@@ -64,7 +64,7 @@
     max_priority: <%= @replication_max_priority.to_json %>
     hidden_only: <%= @replication_hidden_only.to_json %>
 <% if @replication_read_pref_tags -%>
-    read_pref_tags: '<%= @replication_read_pref_tags.map{|k,v| "#{k},#{v}"}.join(',').to_json %>'
+    read_pref_tags: '<%= @replication_read_pref_tags.map{|k,v| "#{k}:#{v}"}.join(',').to_json %>'
 <% else -%>
     read_pref_tags: null
 <% end -%>
