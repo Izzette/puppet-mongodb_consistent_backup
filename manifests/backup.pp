@@ -96,6 +96,13 @@ define mongodb_consistent_backup::backup (
     content => template("$module_name/mongodb-consistent-backup.yaml.erb"),
   }
 
+  file { "$backup_location/$backup_name":
+    ensure  => directory,
+    owner   => $cron_user,
+    group   => 'root',
+    mode    => '0770',
+  }
+
   if $manage_cron {
     $verbose_option = $verbose ? {
       true    => '--verbose',
@@ -113,7 +120,10 @@ define mongodb_consistent_backup::backup (
       user      => $cron_user,
       target    => $cron_target,
       provider  => $cron_provider,
-      require   => File[$path],
+      require   => [
+        File[$path],
+        File["$backup_location/$backup_name"],
+      ],
     }
   }
 }
